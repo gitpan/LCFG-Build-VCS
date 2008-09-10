@@ -1,0 +1,190 @@
+2008-09-10  CVS: new release
+
+	* Release: 0.0.20
+
+2008-09-10 14:45  squinney
+
+	* Code clean-ups to try and make the path-handling more
+	  platform-independent. Lots of documentation improvements. Updated
+	  various dependencies.
+
+2008-09-03 15:54  squinney
+
+	* Release: 0.0.19
+
+2008-09-03 15:52  squinney
+
+	* needed to be specific about version of the build-dependency on
+	  File::Copy::Recursive
+
+2008-09-03 15:37  squinney
+
+	* Release: 0.0.18
+
+2008-09-03 15:31  squinney
+
+	* Added dependency on File::Copy::Recursive
+
+2008-09-03 15:21  squinney
+
+	* Release: 0.0.17
+
+2008-09-03 15:21  squinney
+
+	* Added methods to support basic import and checkout for projects
+
+2008-08-14 10:53  squinney
+
+	* Release: 0.0.16
+
+2008-08-14 10:51  squinney
+
+	* Moved the update_changelog method from the CVS module to a higher
+	  level so it can be used by other modules
+
+2008-08-14 10:50  squinney
+
+	* Added support for a 'None' VCS module which just uses the
+	  filesystem
+
+2008-06-24 14:46  squinney
+
+	* Release: 0.0.15
+
+2008-06-24 14:46  squinney
+
+	* switched to pre-processed files to get automated setting of
+	  version, author, etc.
+
+2008-06-23 15:43  squinney
+
+	* Release: 0.0.14
+
+2008-06-23 15:42  squinney
+
+	* Fixed problem with finding relevant files for export_devel() for
+	  CVS where the list could contain deleted files waiting a commit
+
+2008-06-23 13:38  squinney
+
+	* Release: 0.0.13
+
+2008-06-23 13:34  squinney
+
+	* Added support for a dry-run where commands are not actually
+	  executed. Also did some code tidying and checked with perlcritic
+
+2008-05-29 11:04  squinney
+
+	* Modified the CVS export and export_devel methods to return the
+	  name of the created directory
+
+2008-05-13 12:46  squinney
+
+	* no longer have any man1 files
+
+2008-05-13 12:40  squinney
+
+	* Release: 0.0.11
+
+2008-05-13 12:02  squinney
+
+	* Moved lcfg-reltool to LCFG-Build-Tools to simplify dependencies
+
+2008-03-07 14:27  squinney
+
+	* Release: 0.0.10
+
+2008-03-06 10:22  squinney
+
+	* Release: 0.0.9
+
+2008-03-06 10:09  squinney
+
+	* cleaned Makefile.PL
+
+2008-03-04 11:48  squinney
+
+	* Release: 0.0.8
+
+2008-03-04 11:42  squinney
+
+	* fixed export method for cvs
+
+2008-03-04 10:29  squinney
+
+	* Release: 0.0.7
+
+2008-03-04 10:25  squinney
+
+	* Improved the handling of the workdir attribute
+
+2008-03-03 21:26  squinney
+
+	* Fixed switching to working directory
+
+2008-03-03 21:04  squinney
+
+	* fixed switch to work directory
+
+2008-03-03 20:57  squinney
+
+	* Release: 0.0.6
+
+2008-03-03 20:57  squinney
+
+	* Added support for exporting CVS modules
+
+2008-02-28 09:55  squinney
+
+	* Added Changes file to CVS
+
+2008-02-28 09:54  squinney
+
+	* Release: 0.0.5
+
+2008-02-28 09:53  squinney
+
+	* Added simple release.mk so it is easy to use lcfg-reltool with
+	  make
+
+2008-02-20 15:32  squinney
+
+	* Added Changes file
+
+2008-02-20 15:32  squinney
+
+	* Release: 0.0.4
+
+2008-02-20 15:28  squinney
+
+	* Added basic documentation to LCFG::Build::VCS::CVS
+
+2008-02-20 15:28  squinney
+
+	* Fixed small pod error
+
+2008-02-20 15:28  squinney
+
+	* Fixed small pod error
+
+2008-02-20 15:27  squinney
+
+	* Improved control over the changelog filename from lcfg-reltool
+
+2008-02-20 15:27  squinney
+
+	* Noted that we are using CVS
+
+2008-02-20 15:26  squinney
+
+	* Added dependency on Date::Format
+
+2008-02-20 15:03  squinney
+
+	* Added documentation
+
+2008-02-19 17:22  squinney
+
+	* First release of LCFG::Build::VCS
+

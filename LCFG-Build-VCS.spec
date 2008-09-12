@@ -1,10 +1,10 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.0.20
+Version:        0.0.21
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.0.20.tar.gz
+Source0:        LCFG-Build-VCS-0.0.21.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
@@ -59,7 +59,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/*
 
 %changelog
-* Wed Sep 10 2008 <<<< Release: 0.0.20 >>>>
+* Fri Sep 12 2008 <<<< Release: 0.0.21 >>>>
+
+* Fri Sep 12 2008 10:45 squinney
+- Turns out that doing a chown on files for the export_devel()
+  method in the CVS module was pointless and slightly broken. The
+  checkout_project() method was also altered so that if no version
+  is specified it just checks out the main project.
+
+* Wed Sep 10 2008 14:48 squinney
 
 * Wed Sep 10 2008 14:45 squinney
 - Code clean-ups to try and make the path-handling more

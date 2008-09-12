@@ -2,13 +2,13 @@ package LCFG::Build::VCS::CVS;  # -*-cperl-*-
 use strict;
 use warnings;
 
-# $Id: CVS.pm.in,v 1.4 2008/09/10 13:45:37 squinney Exp $
+# $Id: CVS.pm.in,v 1.5 2008/09/12 09:45:54 squinney Exp $
 # $Source: /disk/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/CVS.pm.in,v $
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 # $HeadURL$
-# $Date: 2008/09/10 13:45:37 $
+# $Date: 2008/09/12 09:45:54 $
 
-our $VERSION = '0.0.20';
+our $VERSION = '0.0.21';
 
 use Moose;
 with 'LCFG::Build::VCS';
@@ -305,7 +305,6 @@ sub export_devel {
             ) = stat $from_dir;
 
             chmod $mode, $to_dir or die "chmod on $to_dir failed: $!\n";
-            chown $uid, $gid, $to_dir or die "chown on $to_dir failed: $!\n";
 
             # We don't care about atime/mtime for directories
         }
@@ -325,9 +324,8 @@ sub export_devel {
             File::Copy::syscopy( $from, $to )
                 or die "Copy $from to $to failed: $!\n";
 
-            chmod $mode, $to or die "chmod on $to failed: $!\n";
-            chown $uid, $gid, $to or die "chown on $to failed: $!\n";
-            utime $atime, $mtime, $to or die "utime on $to failed: $!\n";
+            chmod $mode, $to or die "chmod on $to to ($mode) failed: $!\n";
+            utime $atime, $mtime, $to or die "utime on $to to ($atime, $mtime) failed: $!\n";
 
         }
     }
@@ -376,13 +374,18 @@ sub checkout_project {
         $outdir = '.';
     }
 
-    my $tag = $self->gen_tag($version);
+    my @args;
+    if ( defined $version ) {
+        my $tag = $self->gen_tag($version);
+
+        @args = ( 'r', $tag );
+    }
 
     my $orig_dir = Cwd::abs_path();
 
     chdir $outdir or die "tag: Could not access directory, $outdir: $!\n";
 
-    $self->run_cmd( 'checkout', '-r', $tag, $self->module );
+    $self->run_cmd( 'checkout', @args, $self->module );
 
     chdir $orig_dir
         or die "Could not return to original directory, $orig_dir: $!\n";
@@ -422,7 +425,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::CVS version 0.0.20
+    This documentation refers to LCFG::Build::VCS::CVS version 0.0.21
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 ---
 name: LCFG-Build-VCS
-version: 0.0.20
+version: 0.0.21
 author:
   - 'Stephen Quinney <squinney@inf.ed.ac.uk>'
 abstract: LCFG version control infrastructure
@@ -17,13 +17,13 @@ build_requires:
 provides:
   LCFG::Build::VCS:
     file: lib/LCFG/Build/VCS.pm
-    version: 0.0.20
+    version: 0.0.21
   LCFG::Build::VCS::CVS:
     file: lib/LCFG/Build/VCS/CVS.pm
-    version: 0.0.20
+    version: 0.0.21
   LCFG::Build::VCS::None:
     file: lib/LCFG/Build/VCS/None.pm
-    version: 0.0.20
+    version: 0.0.21
 generated_by: Module::Build version 0.2807
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

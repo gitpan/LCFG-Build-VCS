@@ -2,13 +2,13 @@ package LCFG::Build::VCS;   # -*-cperl-*-
 use strict;
 use warnings;
 
-# $Id: VCS.pm.in,v 1.4 2008/09/10 13:45:37 squinney Exp $
+# $Id: VCS.pm.in,v 1.5 2008/09/12 09:45:54 squinney Exp $
 # $Source: /disk/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS.pm.in,v $
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 # $HeadURL$
-# $Date: 2008/09/10 13:45:37 $
+# $Date: 2008/09/12 09:45:54 $
 
-our $VERSION = '0.0.20';
+our $VERSION = '0.0.21';
 
 use Date::Format ();
 use IO::File ();
@@ -179,7 +179,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS version 0.0.20
+    This documentation refers to LCFG::Build::VCS version 0.0.21
 
 =head1 SYNOPSIS
 
@@ -202,7 +202,7 @@ the version-control log and checking all changes are committed.
 
 This is an interface, you should not attempt to create objects
 directly using this module. You will need to implement a sub-class,
-for example LCFG::Build::VCS::CVS. This interface requires certain
+for example L<LCFG::Build::VCS::CVS>. This interface requires certain
 attributes and methods be specified within any implementing sub-class,
 see below for details. For complete details you should read the
 documentation associated with the specific sub-class.

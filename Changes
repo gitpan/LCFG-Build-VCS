@@ -1,4 +1,15 @@
-2008-09-10  CVS: new release
+2008-09-12  CVS: new release
+
+	* Release: 0.0.21
+
+2008-09-12 10:45  squinney
+
+	* Turns out that doing a chown on files for the export_devel()
+	  method in the CVS module was pointless and slightly broken. The
+	  checkout_project() method was also altered so that if no version
+	  is specified it just checks out the main project.
+
+2008-09-10 14:48  squinney
 
 	* Release: 0.0.20
 

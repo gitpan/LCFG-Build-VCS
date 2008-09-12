@@ -8,7 +8,7 @@ use warnings;
 # $HeadURL$
 # $Date: 2008/09/10 13:45:37 $
 
-our $VERSION = '0.0.20';
+our $VERSION = '0.0.21';
 
 use File::Copy::Recursive ();
 use File::Path ();
@@ -135,7 +135,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::None version 0.0.20
+    This documentation refers to LCFG::Build::VCS::None version 0.0.21
 
 =head1 SYNOPSIS
 

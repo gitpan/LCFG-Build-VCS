@@ -1,24 +1,23 @@
-package LCFG::Build::VCS::CVS;  # -*-cperl-*-
+package LCFG::Build::VCS::CVS;  # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: CVS.pm.in,v 1.5 2008/09/12 09:45:54 squinney Exp $
-# $Source: /disk/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/CVS.pm.in,v $
-# $Revision: 1.5 $
-# $HeadURL$
-# $Date: 2008/09/12 09:45:54 $
+# $Id: CVS.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/CVS.pm.in,v $
+# $Revision: 3582 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_30/lib/LCFG/Build/VCS/CVS.pm.in $
+# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
 
-our $VERSION = '0.0.21';
-
-use Moose;
-with 'LCFG::Build::VCS';
+our $VERSION = '0.0.30';
 
 use Cwd            ();
-use File::Copy     ();
 use File::Find     ();
 use File::Path     ();
 use File::Spec     ();
 use IO::File qw(O_WRONLY O_CREAT O_NONBLOCK O_NOCTTY);
+
+use Moose;
+with 'LCFG::Build::VCS';
 
 has '+binpath' => ( default => '/usr/bin/cvs' );
 
@@ -31,8 +30,21 @@ has 'root' => (
 
 has '+id' => ( default => 'CVS' );
 
+sub build_cmd {
+    my ( $self, @args ) = @_;
+
+    my @cmd = ( $self->binpath, '-d', $self->root );
+    if ( $self->quiet ) {
+        push @cmd, '-Q';
+    }
+    push @cmd, @args;
+
+    return @cmd;
+}
+
 # This should give a speed-up in loading
 
+no Moose;
 __PACKAGE__->meta->make_immutable;
 
 sub _get_root {
@@ -54,34 +66,6 @@ sub _get_root {
     }
 
     return $root;
-}
-
-sub run_cmd {
-    my ( $self, @args ) = @_;
-
-    my @cmd = $self->_build_cmd(@args);
-
-    if ( $self->dryrun ) {
-        my $cmd = join q{ }, @cmd;
-        print "Dry-run: $cmd\n";
-    }
-    else {
-        system @cmd;
-    }
-
-    return ( $? != 0 ? 0 : 1 );
-}
-
-sub _build_cmd {
-    my ( $self, @args ) = @_;
-
-    my @cmd = ( $self->binpath, '-d', $self->root );
-    if ( $self->quiet ) {
-        push @cmd, '-Q';
-    }
-    push @cmd, @args;
-
-    return @cmd;
 }
 
 sub genchangelog {
@@ -137,28 +121,17 @@ sub checkcommitted {
     my $dir = $self->workdir;
     chdir $dir or die "check: Could not access directory, $dir: $!\n";
 
-    my @cmd = $self->_build_cmd('status');
-    my $fh;
-    open $fh, '-|', @cmd
-        or die "Failed to run cvs status command: $!\n";
-
-    my $line = <$fh>;
-    if ( !defined $line ) {
-        die "Failed to run cvs status command\n";
-    }
+    my @status = $self->run_cmd('status');
 
     my @notcommitted;
-    while ( defined $line ) {
-        if ( $line =~ m/^File:\s+(\S+)/ ) {
-            my $file = $1;
-            if ( $line !~ m/Status:\s+Up-to-date/ ) {
+    for my $line (@status) {
+        if ( $line =~ m/^File: (.+?)\s+Status: (.+)$/ ) {
+            my ( $file, $status ) = ( $1, $2 );
+            if ( $status !~ m/Up-to-date/ ) {
                 push @notcommitted, $file;
             }
         }
-        $line = <$fh>;
     }
-
-    close $fh;
 
     chdir $orig_dir
         or die "Could not return to original directory, $orig_dir: $!\n";
@@ -191,14 +164,20 @@ sub tagversion {
     my $dir = $self->workdir;
     chdir $dir or die "tag: Could not access directory, $dir: $!\n";
 
-    $self->run_cmd( 'commit', '-m', "Release: $version" )
-        or die "Could not mark release for $dir at $version\n";
+    eval { $self->run_cmd( 'commit', '-m', "Release: $version" ) };
+    if ($@) {
+        die "Could not mark release for $dir at $version\n";
+    }
 
-    $self->run_cmd( 'tag', '-F', '-c', $tag )
-        or die "Could not tag $dir with $tag\n";
+    eval { $self->run_cmd( 'tag', '-F', '-c', $tag ) };
+    if ($@) {
+        die "Could not tag $dir with $tag\n";
+    }
 
-    $self->run_cmd( 'tag', '-F', '-c', 'latest' )
-        or die "Could not tag $dir as latest\n";
+    eval { $self->run_cmd( 'tag', '-F', '-c', 'latest' ) };
+    if ($@) {
+        die "Could not tag $dir as latest\n";
+    }
 
     chdir $orig_dir
         or die "Could not return to original directory, $orig_dir: $!\n";
@@ -288,46 +267,7 @@ sub export_devel {
     );
 
     for my $entry (@entries) {
-        my ( $dirname, $fname ) = @{$entry};
-
-        my $from_dir = File::Spec->catdir( $workdir, $dirname );
-        my $to_dir   = File::Spec->catdir( $exportdir, $dirname );
-
-        if ( !$self->dryrun && !-d $to_dir ) {
-            eval { File::Path::mkpath($to_dir) };
-            if ($@) {
-                die "Could not create $to_dir: $@\n";
-            }
-
-            my ($dev,   $ino,     $mode, $nlink, $uid,
-                $gid,   $rdev,    $size, $atime, $mtime,
-                $ctime, $blksize, $blocks
-            ) = stat $from_dir;
-
-            chmod $mode, $to_dir or die "chmod on $to_dir failed: $!\n";
-
-            # We don't care about atime/mtime for directories
-        }
-
-        my $from = File::Spec->catfile( $workdir, $dirname, $fname );
-        my $to   = File::Spec->catfile( $exportdir, $dirname, $fname );
-
-        my ($dev,   $ino,     $mode, $nlink, $uid,
-            $gid,   $rdev,    $size, $atime, $mtime,
-            $ctime, $blksize, $blocks
-        ) = stat $from;
-
-        if ( $self->dryrun ) {
-            print "Dry-run: $from -> $to\n";
-        }
-        else {
-            File::Copy::syscopy( $from, $to )
-                or die "Copy $from to $to failed: $!\n";
-
-            chmod $mode, $to or die "chmod on $to to ($mode) failed: $!\n";
-            utime $atime, $mtime, $to or die "utime on $to to ($atime, $mtime) failed: $!\n";
-
-        }
+        $self->mirror_file( $workdir, $exportdir, @{$entry} );
     }
 
     return $exportdir;
@@ -394,14 +334,17 @@ sub checkout_project {
 }
 
 sub import_project {
-    my ( $self, $version, $message ) = @_;
+    my ( $self, $dir, $version, $message ) = @_;
+
+    if ( !defined $message ) {
+        $message = 'Imported with LCFG build tools';
+    }
 
     my $vendor_tag  = $self->gen_tag();
     my $release_tag = $self->gen_tag($version);
 
     my $orig_dir = Cwd::abs_path();
 
-    my $dir = $self->workdir;
     chdir $dir or die "tag: Could not access directory, $dir: $!\n";
 
     $self->run_cmd( 'import',
@@ -415,7 +358,6 @@ sub import_project {
     return;
 }
 
-no Moose;
 1;
 __END__
 
@@ -425,7 +367,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::CVS version 0.0.21
+    This documentation refers to LCFG::Build::VCS::CVS version 0.0.30
 
 =head1 SYNOPSIS
 
@@ -581,6 +523,12 @@ Would give you an exported tree of code for the lcfg-foo module
 directory and it would be put into /tmp/lcfg-foo-1.2.3_dev/
 
 Returns the name of the directory into which the tree was exported.
+
+=item import_project( $dir, $version, $message )
+
+Imports a project source tree into the version-control system. You
+need to specify the version for the initial tag. Optionally you can
+specify a message which will be used.
 
 =item logfile()
 

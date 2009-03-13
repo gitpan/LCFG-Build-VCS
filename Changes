@@ -1,201 +1,358 @@
-2008-09-12  CVS: new release
+2009-03-13  SVN: new release
 
-	* Release: 0.0.21
+	* Release: 0.0.30
 
-2008-09-12 10:45  squinney
+2009-03-13 15:11  squinney@INF.ED.AC.UK
 
-	* Turns out that doing a chown on files for the export_devel()
+	* Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,
+	  README, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in,
+	  lib/LCFG/Build/VCS/None.pm.in: Tidied up the dependencies
+
+2009-03-11 13:24  squinney@INF.ED.AC.UK
+
+	* lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in,
+	  lib/LCFG/Build/VCS/None.pm.in, lib/LCFG/Build/VCS/SVN.pm.in: Set
+	  svn:keywords on the LCFG::Build::VCS Perl modules
+
+2009-03-11 12:29  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: Release: 0.0.29
+
+2009-03-11 12:29  squinney@INF.ED.AC.UK
+
+	* lib/LCFG/Build/VCS/SVN.pm.in: Altered commit message for release
+	  tagging
+
+2009-03-10 13:21  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.28
+
+2009-03-10 13:16  squinney
+
+	* lib/LCFG/Build/VCS/SVN.pm.in: tagversion now copies the working
+	  copy rather than the trunk url which seems to avoid some problems
+
+2009-03-09 16:23  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.27
+
+2009-03-09 16:23  squinney
+
+	* LCFG-Build-VCS.spec: Added missing build-dependency on IPC::Run
+
+2009-03-09 15:34  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.26
+
+2009-03-09 15:34  squinney
+
+	* lcfg.yml, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in,
+	  lib/LCFG/Build/VCS/SVN.pm.in: Various bug fixes and improvements
+	  for the CVS and SVN import_project() methods
+
+2009-03-09 14:40  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.25
+
+2009-03-09 14:39  squinney
+
+	* lcfg.yml, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/SVN.pm.in:
+	  With subversion prior to exporting from a url it is necessary to
+	  check that the url actually exists
+
+2009-03-09 14:09  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.24
+
+2009-03-09 14:09  squinney
+
+	* lcfg.yml, lib/LCFG/Build/VCS/SVN.pm.in, t/01_load.t: Implemented
+	  checkout_project and import_project for SVN
+
+2009-03-09 12:02  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.23
+
+2009-03-06 18:27  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.22
+
+2009-03-06 18:26  squinney
+
+	* lcfg.yml, lib/LCFG/Build/VCS/CVS.pm.in: fixed override of
+	  build_cmd in LCFG::Build::VCS::CVS
+
+2009-03-06 18:26  squinney
+
+	* LCFG-Build-VCS.spec: Added LCFG/Build/VCS/SVN.pm to the specfile
+
+2009-03-06 18:14  squinney
+
+	* LCFG-Build-VCS.spec, MANIFEST, README: Depend on subversion and
+	  svn2cl in the specfile. Document new deps in the README
+
+2009-03-06 18:14  squinney
+
+	* lib/LCFG/Build/VCS/CVS.pm.in: LCFG::Build::VCS::CVS use the new
+	  run_cmd and mirror_file methods.
+
+2009-03-06 18:11  squinney
+
+	* lib/LCFG/Build/VCS.pm.in: Promoted build_cmd and run_cmd to
+	  LCFG::Build::VCS and use IPC::Run. Added mirror_file() to
+	  LCFG::Build::VCS for mirroring files between the working copy and
+	  a build directory.
+
+2009-03-06 18:08  squinney
+
+	* lib/LCFG/Build/VCS/SVN.pm.in: Added first pass at subversion
+	  support
+
+2008-09-12 09:46  squinney
+
+	* Changes, lcfg.yml: Release: 0.0.21
+
+2008-09-12 09:45  squinney
+
+	* lcfg.yml, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in:
+	  Turns out that doing a chown on files for the export_devel()
 	  method in the CVS module was pointless and slightly broken. The
 	  checkout_project() method was also altered so that if no version
 	  is specified it just checks out the main project.
 
-2008-09-10 14:48  squinney
+2008-09-10 13:48  squinney
 
-	* Release: 0.0.20
+	* Changes, lcfg.yml: Release: 0.0.20
 
-2008-09-10 14:45  squinney
+2008-09-10 13:45  squinney
 
-	* Code clean-ups to try and make the path-handling more
-	  platform-independent. Lots of documentation improvements. Updated
-	  various dependencies.
+	* Build.PL.in, LCFG-Build-VCS.spec, MANIFEST, META.yml,
+	  META.yml.in, Makefile.PL, README, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in,
+	  lib/LCFG/Build/VCS/None.pm.in, mk: Code clean-ups to try and make
+	  the path-handling more platform-independent. Lots of
+	  documentation improvements. Updated various dependencies.
 
-2008-09-03 15:54  squinney
+2008-09-03 14:54  squinney
 
-	* Release: 0.0.19
+	* Changes, lcfg.yml: Release: 0.0.19
 
-2008-09-03 15:52  squinney
+2008-09-03 14:52  squinney
 
-	* needed to be specific about version of the build-dependency on
-	  File::Copy::Recursive
+	* LCFG-Build-VCS.spec: needed to be specific about version of the
+	  build-dependency on File::Copy::Recursive
 
-2008-09-03 15:37  squinney
+2008-09-03 14:37  squinney
 
-	* Release: 0.0.18
+	* Changes, lcfg.yml: Release: 0.0.18
 
-2008-09-03 15:31  squinney
+2008-09-03 14:31  squinney
 
-	* Added dependency on File::Copy::Recursive
+	* Build.PL.in, LCFG-Build-VCS.spec, META.yml, Makefile.PL,
+	  lcfg.yml: Added dependency on File::Copy::Recursive
 
-2008-09-03 15:21  squinney
+2008-09-03 14:21  squinney
 
-	* Release: 0.0.17
+	* Changes, lcfg.yml: Release: 0.0.17
 
-2008-09-03 15:21  squinney
+2008-09-03 14:21  squinney
 
-	* Added methods to support basic import and checkout for projects
+	* lcfg.yml, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/CVS.pm.in,
+	  lib/LCFG/Build/VCS/None.pm.in, t/01_load.t: Added methods to
+	  support basic import and checkout for projects
 
-2008-08-14 10:53  squinney
+2008-08-14 09:53  squinney
 
-	* Release: 0.0.16
+	* Changes, lcfg.yml: Release: 0.0.16
 
-2008-08-14 10:51  squinney
+2008-08-14 09:51  squinney
 
-	* Moved the update_changelog method from the CVS module to a higher
-	  level so it can be used by other modules
+	* MANIFEST, lcfg.yml, lib/LCFG/Build/VCS.pm.in,
+	  lib/LCFG/Build/VCS/CVS.pm.in: Moved the update_changelog method
+	  from the CVS module to a higher level so it can be used by other
+	  modules
 
-2008-08-14 10:50  squinney
+2008-08-14 09:50  squinney
 
-	* Added support for a 'None' VCS module which just uses the
-	  filesystem
+	* lib/LCFG/Build/VCS/None.pm.in: Added support for a 'None' VCS
+	  module which just uses the filesystem
 
-2008-06-24 14:46  squinney
+2008-06-24 13:46  squinney
 
-	* Release: 0.0.15
+	* Changes, lcfg.yml: Release: 0.0.15
 
-2008-06-24 14:46  squinney
+2008-06-24 13:46  squinney
 
-	* switched to pre-processed files to get automated setting of
-	  version, author, etc.
+	* Build.PL, Build.PL.in, LCFG-Build-VCS.spec, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS.pm.in,
+	  lib/LCFG/Build/VCS/CVS.pm, lib/LCFG/Build/VCS/CVS.pm.in: switched
+	  to pre-processed files to get automated setting of version,
+	  author, etc.
 
-2008-06-23 15:43  squinney
+2008-06-23 14:43  squinney
 
-	* Release: 0.0.14
+	* Changes, lcfg.yml: Release: 0.0.14
 
-2008-06-23 15:42  squinney
+2008-06-23 14:42  squinney
 
-	* Fixed problem with finding relevant files for export_devel() for
-	  CVS where the list could contain deleted files waiting a commit
+	* Build.PL, Build.PL.in, LCFG-Build-VCS.spec, MANIFEST, META.yml,
+	  README, lcfg.yml, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm, perl-LCFG-Build-VCS.spec: Fixed
+	  problem with finding relevant files for export_devel() for CVS
+	  where the list could contain deleted files waiting a commit
 
-2008-06-23 13:38  squinney
+2008-06-23 12:38  squinney
 
-	* Release: 0.0.13
+	* Build.PL, Changes, META.yml, README, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec: Release: 0.0.13
 
-2008-06-23 13:34  squinney
+2008-06-23 12:34  squinney
 
-	* Added support for a dry-run where commands are not actually
-	  executed. Also did some code tidying and checked with perlcritic
+	* META.yml, README, lcfg.yml, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm: Added support for a dry-run where
+	  commands are not actually executed. Also did some code tidying
+	  and checked with perlcritic
 
-2008-05-29 11:04  squinney
+2008-05-29 10:04  squinney
 
-	* Modified the CVS export and export_devel methods to return the
-	  name of the created directory
+	* Build.PL, lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec: Modified the CVS export and
+	  export_devel methods to return the name of the created directory
 
-2008-05-13 12:46  squinney
+2008-05-13 11:46  squinney
 
-	* no longer have any man1 files
+	* perl-LCFG-Build-VCS.spec: no longer have any man1 files
 
-2008-05-13 12:40  squinney
+2008-05-13 11:40  squinney
 
-	* Release: 0.0.11
+	* Build.PL, Changes, MANIFEST, META.yml, Makefile.PL, README,
+	  lcfg.yml, lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec: Release: 0.0.11
 
-2008-05-13 12:02  squinney
+2008-05-13 11:02  squinney
 
-	* Moved lcfg-reltool to LCFG-Build-Tools to simplify dependencies
+	* META.yml, bin, perl-LCFG-Build-VCS.spec: Moved lcfg-reltool to
+	  LCFG-Build-Tools to simplify dependencies
 
 2008-03-07 14:27  squinney
 
-	* Release: 0.0.10
+	* Build.PL, Changes, META.yml, README, bin/lcfg-reltool, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec: Release: 0.0.10
 
 2008-03-06 10:22  squinney
 
-	* Release: 0.0.9
+	* Build.PL, Changes, META.yml, README, bin/lcfg-reltool, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec: Release: 0.0.9
 
 2008-03-06 10:09  squinney
 
-	* cleaned Makefile.PL
+	* Makefile.PL: cleaned Makefile.PL
 
 2008-03-04 11:48  squinney
 
-	* Release: 0.0.8
+	* Build.PL, Changes, META.yml, Makefile.PL, README,
+	  bin/lcfg-reltool, lcfg.yml, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm, perl-LCFG-Build-VCS.spec: Release:
+	  0.0.8
 
 2008-03-04 11:42  squinney
 
-	* fixed export method for cvs
+	* lib/LCFG/Build/VCS/CVS.pm: fixed export method for cvs
 
 2008-03-04 10:29  squinney
 
-	* Release: 0.0.7
+	* Build.PL, Changes, META.yml, Makefile.PL, README,
+	  bin/lcfg-reltool, lcfg.yml, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm, perl-LCFG-Build-VCS.spec: Release:
+	  0.0.7
 
 2008-03-04 10:25  squinney
 
-	* Improved the handling of the workdir attribute
+	* Makefile.PL, README, bin/lcfg-reltool, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm: Improved the
+	  handling of the workdir attribute
 
 2008-03-03 21:26  squinney
 
-	* Fixed switching to working directory
+	* lib/LCFG/Build/VCS/CVS.pm: Fixed switching to working directory
 
 2008-03-03 21:04  squinney
 
-	* fixed switch to work directory
+	* lib/LCFG/Build/VCS/CVS.pm: fixed switch to work directory
 
 2008-03-03 20:57  squinney
 
-	* Release: 0.0.6
+	* Changes, lcfg.yml: Release: 0.0.6
 
 2008-03-03 20:57  squinney
 
-	* Added support for exporting CVS modules
+	* Build.PL, META.yml, Makefile.PL, README, bin/lcfg-reltool,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm, mk/release.mk,
+	  perl-LCFG-Build-VCS.spec: Added support for exporting CVS modules
 
 2008-02-28 09:55  squinney
 
-	* Added Changes file to CVS
+	* Changes: Added Changes file to CVS
 
 2008-02-28 09:54  squinney
 
-	* Release: 0.0.5
+	* META.yml, README, lcfg.yml, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm: Release: 0.0.5
 
 2008-02-28 09:53  squinney
 
-	* Added simple release.mk so it is easy to use lcfg-reltool with
+	* Build.PL, MANIFEST, mk, mk/release.mk, perl-LCFG-Build-VCS.spec:
+	  Added simple release.mk so it is easy to use lcfg-reltool with
 	  make
 
 2008-02-20 15:32  squinney
 
-	* Added Changes file
+	* MANIFEST, perl-LCFG-Build-VCS.spec: Added Changes file
 
 2008-02-20 15:32  squinney
 
-	* Release: 0.0.4
+	* Build.PL, MANIFEST, META.yml, Makefile.PL, README, lcfg.yml,
+	  lib/LCFG/Build/VCS.pm, lib/LCFG/Build/VCS/CVS.pm,
+	  perl-LCFG-Build-VCS.spec, t, t/01_load.t: Release: 0.0.4
 
 2008-02-20 15:28  squinney
 
-	* Added basic documentation to LCFG::Build::VCS::CVS
+	* lib/LCFG/Build/VCS/CVS.pm: Added basic documentation to
+	  LCFG::Build::VCS::CVS
 
 2008-02-20 15:28  squinney
 
-	* Fixed small pod error
-
-2008-02-20 15:28  squinney
-
-	* Fixed small pod error
+	* lib/LCFG/Build/VCS.pm: Fixed small pod error
 
 2008-02-20 15:27  squinney
 
-	* Improved control over the changelog filename from lcfg-reltool
+	* bin/lcfg-reltool: Improved control over the changelog filename
+	  from lcfg-reltool
 
 2008-02-20 15:27  squinney
 
-	* Noted that we are using CVS
+	* lcfg.yml: Noted that we are using CVS
 
 2008-02-20 15:26  squinney
 
-	* Added dependency on Date::Format
+	* Build.PL: Added dependency on Date::Format
 
 2008-02-20 15:03  squinney
 
-	* Added documentation
+	* lib/LCFG/Build/VCS.pm: Added documentation
 
 2008-02-19 17:22  squinney
 
-	* First release of LCFG::Build::VCS
+	* Build.PL, MANIFEST, MANIFEST.SKIP, META.yml, Makefile.PL, README,
+	  bin, bin/lcfg-reltool, lcfg.yml, lib, lib/LCFG, lib/LCFG/Build,
+	  lib/LCFG/Build/VCS, lib/LCFG/Build/VCS.pm,
+	  lib/LCFG/Build/VCS/CVS.pm, perl-LCFG-Build-VCS.spec: First
+	  release of LCFG::Build::VCS
+
+2008-02-19 17:22  
+
+	* .: Standard project directories initialized by cvs2svn.
 

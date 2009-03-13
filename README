@@ -26,13 +26,19 @@ To build this module you will need the following:
 
 To use this module you will need the following:
 
-        Date::Format >= 1.16
+        DateTime
+        IPC::Run
         Moose >= 0.57
         File::Copy::Recursive >= 0.36
 
 For CVS support you will need the cvs tools installed. Also if you
 want to generate project change log files from the CVS revision logs
 you will need the cvs2cl script installed.
+
+For subversion support you will need subversion installed. On some
+Linux distributions you might also need to install
+subversion-tools. If you want to generate project change log files
+from the SVN revision logs you will need the svn2cl script installed.
 
 ==== INSTALLATION ====
 

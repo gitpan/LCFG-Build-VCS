@@ -1,19 +1,22 @@
-package LCFG::Build::VCS;   # -*-cperl-*-
+package LCFG::Build::VCS;   # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: VCS.pm.in,v 1.5 2008/09/12 09:45:54 squinney Exp $
-# $Source: /disk/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS.pm.in,v $
-# $Revision: 1.5 $
-# $HeadURL$
-# $Date: 2008/09/12 09:45:54 $
+# $Id: VCS.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS.pm.in,v $
+# $Revision: 3582 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_30/lib/LCFG/Build/VCS.pm.in $
+# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
 
-our $VERSION = '0.0.21';
+our $VERSION = '0.0.30';
 
-use Date::Format ();
-use IO::File ();
+use DateTime ();
+use File::Copy ();
+use File::Path ();
 use File::Spec ();
 use File::Temp ();
+use IO::File ();
+use IPC::Run qw(run);
 
 use Moose::Role;
 use Moose::Util::TypeConstraints;
@@ -30,7 +33,7 @@ coerce 'AbsPath'
     => from 'Str'
     => via {  my $path = File::Spec->file_name_is_absolute($_) ? $_ : File::Spec->rel2abs($_); $path =~ s{/$}{}; $path };
 
-requires qw/checkcommitted genchangelog tagversion run_cmd export export_devel import_project checkout_project/;
+requires qw/checkcommitted genchangelog tagversion export export_devel import_project checkout_project/;
 
 has 'id' => (
     is       => 'ro',
@@ -78,6 +81,41 @@ has 'logname' => (
     default  => 'ChangeLog',
     required => 1,
 );
+
+sub build_cmd {
+    my ( $self, @args ) = @_;
+
+    my @cmd = ( $self->binpath, @args );
+
+    return @cmd;
+}
+
+sub run_cmd {
+    my ( $self, @args ) = @_;
+
+    my @cmd = $self->build_cmd(@args);
+
+    my @out;
+    if ( $self->dryrun ) {
+        my $cmd = join q( ), @cmd;
+        print "Dry-run: $cmd\n";
+    }
+    else {
+        my ( $in, $out, $err );
+
+        my $success = run \@cmd, \$in, \$out, \$err;
+        if ( !$success ) {
+            die "Error whilst running @cmd: $err\n";
+        }
+        if ($err) {
+            warn "$err\n";
+        }
+
+        @out = split /[\r\n]+/, $out;
+    }
+
+    return @out;
+}
 
 sub logfile {
     my ($self) = @_;
@@ -137,7 +175,7 @@ sub update_changelog {
     my $tmpname = $tmplog->filename;
 
     my @now = localtime;
-    my $date = Date::Format::strftime( '%Y-%m-%d', @now );
+    my $date = DateTime->now->ymd;
 
     my $id = $self->id;
 
@@ -170,6 +208,51 @@ EOT
     return;
 }
 
+sub mirror_file {
+    my ( $self, $workdir, $exportdir, $dirname, $fname ) = @_;
+
+    my $from_dir = File::Spec->catdir( $workdir, $dirname );
+    my $to_dir   = File::Spec->catdir( $exportdir, $dirname );
+
+    if ( !$self->dryrun && !-d $to_dir ) {
+        eval { File::Path::mkpath($to_dir) };
+        if ($@) {
+            die "Could not create $to_dir: $@\n";
+        }
+
+        my ($dev,   $ino,     $mode, $nlink, $uid,
+            $gid,   $rdev,    $size, $atime, $mtime,
+            $ctime, $blksize, $blocks
+        ) = stat $from_dir;
+
+        chmod $mode, $to_dir or die "chmod on $to_dir failed: $!\n";
+
+        # We don't care about atime/mtime for directories
+    }
+
+    my $from = File::Spec->catfile( $workdir, $dirname, $fname );
+    my $to   = File::Spec->catfile( $exportdir, $dirname, $fname );
+
+    my ($dev,   $ino,     $mode, $nlink, $uid,
+        $gid,   $rdev,    $size, $atime, $mtime,
+        $ctime, $blksize, $blocks
+    ) = stat $from;
+
+    if ( $self->dryrun ) {
+        print "Dry-run: $from -> $to\n";
+    }
+    else {
+        File::Copy::syscopy( $from, $to )
+              or die "Copy $from to $to failed: $!\n";
+
+        chmod $mode, $to or die "chmod on $to to ($mode) failed: $!\n";
+        utime $atime, $mtime, $to or die "utime on $to to ($atime, $mtime) failed: $!\n";
+
+    }
+
+    return;
+}
+
 1;
 __END__
 
@@ -179,7 +262,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS version 0.0.21
+    This documentation refers to LCFG::Build::VCS version 0.0.30
 
 =head1 SYNOPSIS
 
@@ -275,6 +358,15 @@ is specified then just the module name will be used.
 This will add a standard-format release tag entry to the top of the
 change log file.
 
+=item mirror_file( $sourcedir, $targetdir, $reldir, $basename )
+
+This will copy a file from the source directory to the target
+directory. The relative path of the file (within the source directory)
+must be split into the relative directory path and filename. Effort is
+made to preserve the mode and, in the case of files, atime and
+mtime. This is used by various modules in the export_devel() method to
+mirror the project directory into a build directory.
+
 =item logfile()
 
 This is a convenience method which returns the full path to the
@@ -329,7 +421,7 @@ Exports the current development version of the source code for the
 project (i.e. your working copy). The second argument specifies the
 directory into which the exported project directory will be placed.
 
-=item import_project( $version, $message )
+=item import_project( $dir, $version, $message )
 
 Imports a project source tree into the version-control system.
 
@@ -342,8 +434,7 @@ copy will include the files necessary for the version-control system
 
 =head1 DEPENDENCIES
 
-This module is L<Moose> powered. It also requires L<Date::Format>
-which is part of the TimeDate suite.
+This module is L<Moose> powered. It also requires L<DateTime> and L<IPC::Run>.
 
 =head1 SEE ALSO
 

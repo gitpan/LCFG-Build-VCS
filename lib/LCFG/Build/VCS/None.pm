@@ -1,14 +1,14 @@
-package LCFG::Build::VCS::None;  # -*-cperl-*-
+package LCFG::Build::VCS::None;  # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: None.pm.in,v 1.3 2008/09/10 13:45:37 squinney Exp $
-# $Source: /disk/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/None.pm.in,v $
-# $Revision: 1.3 $
-# $HeadURL$
-# $Date: 2008/09/10 13:45:37 $
+# $Id: None.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/None.pm.in,v $
+# $Revision: 3582 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_30/lib/LCFG/Build/VCS/None.pm.in $
+# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
 
-our $VERSION = '0.0.21';
+our $VERSION = '0.0.30';
 
 use File::Copy::Recursive ();
 use File::Path ();
@@ -135,7 +135,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::None version 0.0.21
+    This documentation refers to LCFG::Build::VCS::None version 0.0.30
 
 =head1 SYNOPSIS
 
@@ -303,7 +303,8 @@ the simple filesystem-based version control system.
 
 =head1 DEPENDENCIES
 
-This module is L<Moose> powered and it depends on L<LCFG::Build::VCS>.
+This module is L<Moose> powered and it depends on
+L<LCFG::Build::VCS>. It also requires L<File::Copy::Recursive>
 
 =head1 SEE ALSO
 

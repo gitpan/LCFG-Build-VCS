@@ -30,6 +30,7 @@ To use this module you will need the following:
         IPC::Run
         Moose >= 0.57
         File::Copy::Recursive >= 0.36
+        File::HomeDir >= 0.58
 
 For CVS support you will need the cvs tools installed. Also if you
 want to generate project change log files from the CVS revision logs

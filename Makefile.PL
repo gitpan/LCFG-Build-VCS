@@ -10,6 +10,7 @@ WriteMakefile
           'PREREQ_PM' => {
                            'Test::More' => 0,
                            'File::Copy::Recursive' => '0.36',
+                           'File::HomeDir' => '0.58',
                            'DateTime' => 0,
                            'IPC::Run' => 0,
                            'Moose' => '0.57'

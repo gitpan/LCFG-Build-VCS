@@ -5,10 +5,10 @@ use warnings;
 # $Id: SVN.pm.in 3731 2009-03-25 16:26:01Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/SVN.pm.in,v $
 # $Revision: 3731 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_32/lib/LCFG/Build/VCS/SVN.pm.in $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_33/lib/LCFG/Build/VCS/SVN.pm.in $
 # $Date: 2009-03-25 16:26:01 +0000 (Wed, 25 Mar 2009) $
 
-our $VERSION = '0.0.32';
+our $VERSION = '0.0.33';
 
 use File::Path ();
 use File::Spec ();
@@ -342,7 +342,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::SVN version 0.0.32
+    This documentation refers to LCFG::Build::VCS::SVN version 0.0.33
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,16 @@
 2009-04-09  SVN: new release
 
-	* Release: 0.0.32
+	* Release: 0.0.33
+
+2009-04-09 09:34  squinney@INF.ED.AC.UK
+
+	* Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,
+	  README: Forgot to add build-dependency on perl(File::HomeDir).
+	  Also added it to the dependency lists in the CPAN metadata files
+
+2009-04-09 09:25  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.32
 
 2009-04-09 09:25  squinney@INF.ED.AC.UK
 

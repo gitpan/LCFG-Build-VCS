@@ -1,15 +1,16 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.0.32
+Version:        0.0.33
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.0.32.tar.gz
+Source0:        LCFG-Build-VCS-0.0.33.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Moose) >= 0.57
+BuildRequires:  perl(File::HomeDir) >= 0.58
 BuildRequires:	perl(File::Copy::Recursive) >= 0.36
 BuildRequires:	perl(DateTime)
 BuildRequires:  perl(IPC::Run)
@@ -63,6 +64,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Thu Apr 09 2009 SVN: new release
+
+* Thu Apr 09 2009 09:34 squinney@INF.ED.AC.UK
+- Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,
+  README: Forgot to add build-dependency on perl(File::HomeDir).
+  Also added it to the dependency lists in the CPAN metadata files
+
+* Thu Apr 09 2009 09:25 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.32
 
 * Thu Apr 09 2009 09:25 squinney@INF.ED.AC.UK
 - lcfg.yml, lib/LCFG/Build/VCS/None.pm.in: Implemented

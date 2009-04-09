@@ -2,13 +2,13 @@ package LCFG::Build::VCS::SVN; # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: SVN.pm.in 3444 2009-03-11 13:24:11Z squinney@INF.ED.AC.UK $
+# $Id: SVN.pm.in 3731 2009-03-25 16:26:01Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/SVN.pm.in,v $
-# $Revision: 3444 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_30/lib/LCFG/Build/VCS/SVN.pm.in $
-# $Date: 2009-03-11 13:24:11 +0000 (Wed, 11 Mar 2009) $
+# $Revision: 3731 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_32/lib/LCFG/Build/VCS/SVN.pm.in $
+# $Date: 2009-03-25 16:26:01 +0000 (Wed, 25 Mar 2009) $
 
-our $VERSION = '0.0.30';
+our $VERSION = '0.0.32';
 
 use File::Path ();
 use File::Spec ();
@@ -233,7 +233,7 @@ sub genchangelog {
 
     warn "Generating Changelog from subversion log\n";
 
-    my $dir     = $self->workdir;
+    my $trunk = $self->trunk_url();
     my $logfile = $self->logfile;
 
     if ( !-e $logfile ) {
@@ -247,7 +247,7 @@ sub genchangelog {
         $self->run_cmd( 'add', $logfile );
     }
 
-    my @cmd = ( '/usr/bin/svn2cl', '--output', $logfile, $dir );
+    my @cmd = ( '/usr/bin/svn2cl', '--output', $logfile, $trunk );
     if ( $self->dryrun ) {
         print "Dry-run: @cmd\n";
     }
@@ -342,7 +342,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::SVN version 0.0.30
+    This documentation refers to LCFG::Build::VCS::SVN version 0.0.32
 
 =head1 SYNOPSIS
 

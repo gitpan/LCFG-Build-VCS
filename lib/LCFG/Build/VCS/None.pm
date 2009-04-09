@@ -2,26 +2,29 @@ package LCFG::Build::VCS::None;  # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: None.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Id: None.pm.in 3898 2009-04-09 09:25:53Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/None.pm.in,v $
-# $Revision: 3582 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_30/lib/LCFG/Build/VCS/None.pm.in $
-# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
+# $Revision: 3898 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_32/lib/LCFG/Build/VCS/None.pm.in $
+# $Date: 2009-04-09 10:25:53 +0100 (Thu, 09 Apr 2009) $
 
-our $VERSION = '0.0.30';
+our $VERSION = '0.0.32';
 
 use File::Copy::Recursive ();
+use File::HomeDir ();
 use File::Path ();
 use File::Spec ();
+use IO::Dir ();
 
 use Moose;
 with 'LCFG::Build::VCS';
 
 has 'tagdir' => (
-    is      => 'rw',
-    isa     => 'AbsPath',
-    lazy    => 1,
-    default => sub { _get_parentdir( $_[0]->workdir ) },
+    is            => 'rw',
+    isa           => 'Str',
+    lazy          => 1,
+    default       => sub { File::Spec->catdir( File::HomeDir->my_home(),
+                                               'lcfgbuild', 'tags' ) },
 );
 
 has '+id' => ( default => 'None' );
@@ -29,16 +32,6 @@ has '+id' => ( default => 'None' );
 # This should give a speed-up in loading
 
 __PACKAGE__->meta->make_immutable;
-
-sub _get_parentdir {
-    my ($dir) = @_;
-
-    my @dirs = File::Spec->splitdir($dir);
-    pop @dirs;
-    my $parent = File::Spec->catdir(@dirs);
-
-    return $parent;
-}
 
 sub checkcommitted {
     return;
@@ -55,16 +48,19 @@ sub run_cmd {
 sub tagversion {
     my ( $self, $version ) = @_;
 
+    my $module = $self->module;
+
     $self->update_changelog($version);
 
     my $tag = $self->gen_tag($version);
-    my $storedir = File::Spec->catdir( $self->tagdir, $tag );
+    my $tagdir = File::Spec->catdir( $self->tagdir, $module, $tag );
 
     if ( !$self->dryrun ) {
-        if ( -d $storedir ) {
-            File::Path::rmtree($storedir);
+        if ( -d $tagdir ) {
+            File::Path::rmtree($tagdir);
         }
-        File::Copy::Recursive::dircopy( $self->workdir, $storedir );
+        File::Copy::Recursive::dircopy( $self->workdir, $tagdir )
+              or die "Could not tag $module at $version\n";
     }
 
     return;
@@ -73,14 +69,16 @@ sub tagversion {
 sub export {
     my ( $self, $version, $builddir ) = @_;
 
+    my $module = $self->module;
+
     my $tag = $self->gen_tag($version);
-    my $storedir = File::Spec->catdir( $self->tagdir, $tag );
+    my $storedir = File::Spec->catdir( $self->tagdir, $module, $tag );
 
     if ( !-d $storedir ) {
-        die "Could not find stored tag for $version of " . $self->module . " in $storedir\n";
+        die "Could not find stored tag for $version of $module in $storedir\n";
     }
 
-    my $target = join q{-}, $self->module, $version;
+    my $target = join q{-}, $module, $version;
     my $exportdir = File::Spec->catdir( $builddir, $target );
 
     if ( !$self->dryrun ) {
@@ -97,7 +95,9 @@ sub export {
 sub export_devel {
     my ( $self, $version, $builddir ) = @_;
 
-    my $target = join q{-}, $self->module, $version;
+    my $module = $self->module;
+
+    my $target = join q{-}, $module, $version;
     my $exportdir = File::Spec->catdir( $builddir, $target );
 
     if ( !$self->dryrun ) {
@@ -114,13 +114,58 @@ sub export_devel {
 }
 
 sub checkout_project {
-    my ($self) = @_;
+    my ( $self, $version, $outdir ) = @_;
+
+    my $module = $self->module;
+    my $basedir = File::Spec->catdir( $self->tagdir, $module );
+
+    if ( !-d $basedir ) {
+        die "Could not find the tag directory for $module\n";
+    }
+
+    my $tag;
+    if ( defined $version ) {
+        $tag = $self->gen_tag($version);
+    }
+    else {
+        tie my %dir, 'IO::Dir', $basedir;
+        $tag = (sort grep { !m/^\./} keys %dir)[-1];
+    }
+
+    my $tagdir = File::Spec->catdir( $basedir, $tag );
+
+    if ( !-d $tagdir ) {
+         die "Could not find the tag $tag for $module\n";
+    }
+
+    if ( !defined $outdir ) {
+        $outdir = $module;
+    }
+
+    if ( !$self->dryrun ) {
+        File::Copy::Recursive::dircopy( $tagdir, $outdir )
+              or die "Could not checkout $module tag $tag\n";
+    }
 
     return;
 }
 
 sub import_project {
-    my ($self) = @_;
+    my ( $self, $dir, $version, $message ) = @_;
+
+    my $module = $self->module;
+
+    my $tag = $self->gen_tag($version);
+
+    my $tagdir = File::Spec->catdir( $self->tagdir, $module, $tag );
+
+    if ( !$self->dryrun ) {
+        if ( -d $tagdir ) {
+            File::Path::rmtree($tagdir);
+        }
+        File::Copy::Recursive::dircopy( $dir, $tagdir )
+              or die "Could not import $dir\n";
+    }
 
     return;
 }
@@ -135,7 +180,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::None version 0.0.30
+    This documentation refers to LCFG::Build::VCS::None version 0.0.32
 
 =head1 SYNOPSIS
 

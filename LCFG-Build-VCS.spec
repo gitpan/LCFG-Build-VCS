@@ -1,10 +1,10 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.0.30
+Version:        0.0.32
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.0.30.tar.gz
+Source0:        LCFG-Build-VCS-0.0.32.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
@@ -62,7 +62,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/*
 
 %changelog
-* Fri Mar 13 2009 SVN: new release
+* Thu Apr 09 2009 SVN: new release
+
+* Thu Apr 09 2009 09:25 squinney@INF.ED.AC.UK
+- lcfg.yml, lib/LCFG/Build/VCS/None.pm.in: Implemented
+  import_project() and checkout_project() so that
+  LCFG::Build::Skeleton will work with the None module
+
+* Wed Mar 25 2009 16:26 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.31
+
+* Wed Mar 25 2009 16:26 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/SVN.pm.in: Altered genchangelog to hopefully
+  make the changelog complete
+
+* Fri Mar 13 2009 15:16 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.30
 
 * Fri Mar 13 2009 15:11 squinney@INF.ED.AC.UK
 - Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,

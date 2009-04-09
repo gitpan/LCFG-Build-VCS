@@ -1,6 +1,25 @@
-2009-03-13  SVN: new release
+2009-04-09  SVN: new release
 
-	* Release: 0.0.30
+	* Release: 0.0.32
+
+2009-04-09 09:25  squinney@INF.ED.AC.UK
+
+	* lcfg.yml, lib/LCFG/Build/VCS/None.pm.in: Implemented
+	  import_project() and checkout_project() so that
+	  LCFG::Build::Skeleton will work with the None module
+
+2009-03-25 16:26  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.31
+
+2009-03-25 16:26  squinney@INF.ED.AC.UK
+
+	* lib/LCFG/Build/VCS/SVN.pm.in: Altered genchangelog to hopefully
+	  make the changelog complete
+
+2009-03-13 15:16  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.30
 
 2009-03-13 15:11  squinney@INF.ED.AC.UK
 

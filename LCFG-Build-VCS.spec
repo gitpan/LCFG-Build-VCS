@@ -1,14 +1,14 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.0.33
+Version:        0.1.1
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.0.33.tar.gz
+Source0:        LCFG-Build-VCS-0.1.1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
-BuildRequires:  perl(Module::Build)
+BuildRequires:  perl(Module::Build), perl(Test::More)
 BuildRequires:  perl(Moose) >= 0.57
 BuildRequires:  perl(File::HomeDir) >= 0.58
 BuildRequires:	perl(File::Copy::Recursive) >= 0.36
@@ -63,7 +63,26 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/*
 
 %changelog
-* Thu Apr 09 2009 SVN: new release
+* Mon Jul 12 2010 SVN: new release
+- Release: 0.1.1
+
+* Mon Jul 12 2010 11:10 squinney@INF.ED.AC.UK
+- LCFG-Build-VCS.spec: Build-requires perl(Test::More)
+
+* Mon Jul 12 2010 11:03 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.0
+
+* Mon Jul 12 2010 11:01 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/SVN.pm.in: Do an 'update' before a 'copy' when
+  tagging the project at a particular version. This fixes
+  https://bugs.lcfg.org/show_bug.cgi?id=302
+
+* Mon Jul 12 2010 10:42 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/None.pm.in: Fixed the checkcommitted() method
+  so that it returns true
+
+* Thu Apr 09 2009 09:34 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.33
 
 * Thu Apr 09 2009 09:34 squinney@INF.ED.AC.UK
 - Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,

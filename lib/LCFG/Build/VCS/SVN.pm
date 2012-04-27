@@ -2,13 +2,13 @@ package LCFG::Build::VCS::SVN; # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: SVN.pm.in 3731 2009-03-25 16:26:01Z squinney@INF.ED.AC.UK $
+# $Id: SVN.pm.in 12881 2010-07-12 11:01:25Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/SVN.pm.in,v $
-# $Revision: 3731 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_33/lib/LCFG/Build/VCS/SVN.pm.in $
-# $Date: 2009-03-25 16:26:01 +0000 (Wed, 25 Mar 2009) $
+# $Revision: 12881 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_1/lib/LCFG/Build/VCS/SVN.pm.in $
+# $Date: 2010-07-12 12:01:25 +0100 (Mon, 12 Jul 2010) $
 
-our $VERSION = '0.0.33';
+our $VERSION = '0.1.1';
 
 use File::Path ();
 use File::Spec ();
@@ -327,6 +327,12 @@ sub tagversion {
 
     my $tagurl = $self->tag_url($tag);
 
+    # It would appear that it is occasionally necessary to do an
+    # "update" to get things into a sane state so that a copy will
+    # complete successfully. See https://bugs.lcfg.org/show_bug.cgi?id=302
+
+    $self->run_cmd( 'update', $dir );
+
     $self->run_cmd( 'copy', '--message', "Tagging $module at $tag", $dir, $tagurl );
 
     $self->run_cmd( 'update', $dir );
@@ -342,7 +348,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::SVN version 0.0.33
+    This documentation refers to LCFG::Build::VCS::SVN version 0.1.1
 
 =head1 SYNOPSIS
 

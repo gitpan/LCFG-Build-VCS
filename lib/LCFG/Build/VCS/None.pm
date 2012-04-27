@@ -2,13 +2,13 @@ package LCFG::Build::VCS::None;  # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: None.pm.in 3896 2009-04-09 09:25:46Z squinney@INF.ED.AC.UK $
+# $Id: None.pm.in 12860 2010-07-12 10:42:34Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/None.pm.in,v $
-# $Revision: 3896 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_33/lib/LCFG/Build/VCS/None.pm.in $
-# $Date: 2009-04-09 10:25:46 +0100 (Thu, 09 Apr 2009) $
+# $Revision: 12860 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_1/lib/LCFG/Build/VCS/None.pm.in $
+# $Date: 2010-07-12 11:42:34 +0100 (Mon, 12 Jul 2010) $
 
-our $VERSION = '0.0.33';
+our $VERSION = '0.1.1';
 
 use File::Copy::Recursive ();
 use File::HomeDir ();
@@ -34,7 +34,7 @@ has '+id' => ( default => 'None' );
 __PACKAGE__->meta->make_immutable;
 
 sub checkcommitted {
-    return;
+    return 1;
 }
 
 sub genchangelog {
@@ -180,7 +180,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::None version 0.0.33
+    This documentation refers to LCFG::Build::VCS::None version 0.1.1
 
 =head1 SYNOPSIS
 

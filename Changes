@@ -1,6 +1,29 @@
-2009-04-09  SVN: new release
+2010-07-12  SVN: new release
 
-	* Release: 0.0.33
+	* Release: 0.1.1
+
+2010-07-12 11:10  squinney@INF.ED.AC.UK
+
+	* LCFG-Build-VCS.spec: Build-requires perl(Test::More)
+
+2010-07-12 11:03  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.0
+
+2010-07-12 11:01  squinney@INF.ED.AC.UK
+
+	* lib/LCFG/Build/VCS/SVN.pm.in: Do an 'update' before a 'copy' when
+	  tagging the project at a particular version. This fixes
+	  https://bugs.lcfg.org/show_bug.cgi?id=302
+
+2010-07-12 10:42  squinney@INF.ED.AC.UK
+
+	* lib/LCFG/Build/VCS/None.pm.in: Fixed the checkcommitted() method
+	  so that it returns true
+
+2009-04-09 09:34  squinney@INF.ED.AC.UK
+
+	* Changes, lcfg.yml: LCFG-Build-VCS release: 0.0.33
 
 2009-04-09 09:34  squinney@INF.ED.AC.UK
 

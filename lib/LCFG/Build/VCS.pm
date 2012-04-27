@@ -5,10 +5,10 @@ use warnings;
 # $Id: VCS.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS.pm.in,v $
 # $Revision: 3582 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_0_33/lib/LCFG/Build/VCS.pm.in $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_1/lib/LCFG/Build/VCS.pm.in $
 # $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
 
-our $VERSION = '0.0.33';
+our $VERSION = '0.1.1';
 
 use DateTime ();
 use File::Copy ();
@@ -262,7 +262,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS version 0.0.33
+    This documentation refers to LCFG::Build::VCS version 0.1.1
 
 =head1 SYNOPSIS
 

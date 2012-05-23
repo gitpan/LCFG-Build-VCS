@@ -2,18 +2,19 @@ package LCFG::Build::VCS::SVN; # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: SVN.pm.in 12881 2010-07-12 11:01:25Z squinney@INF.ED.AC.UK $
+# $Id: SVN.pm.in 20985 2012-05-19 14:52:36Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/SVN.pm.in,v $
-# $Revision: 12881 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_1/lib/LCFG/Build/VCS/SVN.pm.in $
-# $Date: 2010-07-12 12:01:25 +0100 (Mon, 12 Jul 2010) $
+# $Revision: 20985 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_4/lib/LCFG/Build/VCS/SVN.pm.in $
+# $Date: 2012-05-19 15:52:36 +0100 (Sat, 19 May 2012) $
 
-our $VERSION = '0.1.1';
+our $VERSION = '0.1.4';
 
 use File::Path ();
 use File::Spec ();
 use IPC::Run qw(run);
 use IO::File qw(O_WRONLY O_CREAT O_NONBLOCK O_NOCTTY);
+use URI ();
 
 use Moose;
 
@@ -54,38 +55,45 @@ sub get_info {
     return;
 }
 
+sub _build_url {
+  my ( $self, $dir, $section, @extra ) = @_;
+
+  my $url = $self->get_info( 'URL', $dir );
+
+  my $u = URI->new($url);
+  my @path = split '/', $u->path;
+
+  while ( defined( my $part = pop @path ) ) {
+    if ( $part eq 'trunk' || $part eq 'tags' || $part eq 'branches' ) {
+      last;
+    }
+  }
+
+  my $module = $self->module;
+
+  my $tags_path = join q{/}, @path, $section, $module, @extra;
+
+  $u->path($tags_path);
+
+  return $u->as_string;
+}
+
 sub tag_base {
     my ( $self, $dir ) = @_;
 
-    my $root = $self->get_info( 'RepositoryRoot', $dir );
-
-    my $module = $self->module;
-
-    my $tagbase = join q{/}, $root, 'tags', $module;
-
-    return $tagbase;
+    return $self->_build_url( $dir, 'tags' );
 }
 
 sub tag_url {
     my ( $self, $tag, $dir ) = @_;
 
-    my $base = $self->tag_base($dir);
-
-    my $tagurl = join q{/}, $base, $tag;
-
-    return $tagurl;
+    return $self->_build_url( $dir, 'tags', $tag );
 }
 
 sub trunk_url {
     my ( $self, $dir ) = @_;
 
-    my $root = $self->get_info( 'RepositoryRoot', $dir );
-
-    my $module = $self->module;
-
-    my $trunk = join q{/}, $root, 'trunk', $module;
-
-    return $trunk;
+    return $self->_build_url( $dir, 'trunk' );
 }
 
 sub run_infocmd {
@@ -348,7 +356,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::SVN version 0.1.1
+    This documentation refers to LCFG::Build::VCS::SVN version 0.1.4
 
 =head1 SYNOPSIS
 

@@ -7,9 +7,10 @@ build:
   gencmake: 0
   remove_input_after_translate: 1
   translate_before_pack: 1
-date: 07/12/10 11:10:12
+date: 19/05/12 14:52:58
 license: GPLv2
 name: LCFG-Build-VCS
+orgident: org.lcfg
 platforms: 
   - FedoraCore5
   - FedoraCore6
@@ -21,4 +22,4 @@ translate:
 vcs: 
   genchangelog: 1
   logname: Changes
-version: 0.1.1
+version: 0.1.4

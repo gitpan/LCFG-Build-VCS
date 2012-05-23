@@ -13,7 +13,8 @@ WriteMakefile
                            'File::HomeDir' => '0.58',
                            'DateTime' => 0,
                            'IPC::Run' => 0,
-                           'Moose' => '0.57'
+                           'Moose' => '0.57',
+                           'URI' => 0,
                          }
         )
 ;

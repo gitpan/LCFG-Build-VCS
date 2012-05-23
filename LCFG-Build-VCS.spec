@@ -1,10 +1,10 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.1.1
+Version:        0.1.4
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.1.1.tar.gz
+Source0:        LCFG-Build-VCS-0.1.4.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
@@ -13,7 +13,7 @@ BuildRequires:  perl(Moose) >= 0.57
 BuildRequires:  perl(File::HomeDir) >= 0.58
 BuildRequires:	perl(File::Copy::Recursive) >= 0.36
 BuildRequires:	perl(DateTime)
-BuildRequires:  perl(IPC::Run)
+BuildRequires:  perl(IPC::Run), perl(URI)
 Requires:       perl(Moose) >= 0.57
 Requires:	perl(File::Copy::Recursive) >= 0.36
 Requires:       cvs, cvs2cl
@@ -63,8 +63,35 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/*
 
 %changelog
-* Mon Jul 12 2010 SVN: new release
-- Release: 0.1.1
+* Sat May 19 2012 SVN: new release
+- Release: 0.1.4
+
+* Sat May 19 2012 14:52 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/SVN.pm.in: Reworked the way the repository url
+  path is split. This should be much more reliable as this does not
+  have any hardwired knowledge about repository structure. The only
+  requirement now is that branches, tags and trunk directories are
+  at the same level in the hierarchy
+
+* Sat May 19 2012 07:46 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.3
+
+* Sat May 19 2012 07:46 squinney@INF.ED.AC.UK
+- Build.PL.in, LCFG-Build-VCS.spec, META.yml.in, Makefile.PL,
+  README: Added dependency on URI module
+
+* Sat May 19 2012 07:34 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.2
+
+* Sat May 19 2012 07:28 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/SVN.pm.in: Reworked the way we build the paths
+  to trunk and tags directories. This hopefully fixes
+  https://bugs.lcfg.org/show_bug.cgi?id=563 by removing the
+  requirement that trunk and tags directories are at the top-level
+  of the repository
+
+* Mon Jul 12 2010 11:10 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.1
 
 * Mon Jul 12 2010 11:10 squinney@INF.ED.AC.UK
 - LCFG-Build-VCS.spec: Build-requires perl(Test::More)

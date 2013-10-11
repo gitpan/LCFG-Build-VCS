@@ -1,10 +1,10 @@
 Name:           perl-LCFG-Build-VCS
-Version:        0.1.4
+Version:        0.2.1
 Release:        1
 Summary:        LCFG version control infrastructure
 License:        GPLv2
 Group:          Development/Libraries
-Source0:        LCFG-Build-VCS-0.1.4.tar.gz
+Source0:        LCFG-Build-VCS-0.2.1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl >= 1:5.6.1
@@ -13,7 +13,7 @@ BuildRequires:  perl(Moose) >= 0.57
 BuildRequires:  perl(File::HomeDir) >= 0.58
 BuildRequires:	perl(File::Copy::Recursive) >= 0.36
 BuildRequires:	perl(DateTime)
-BuildRequires:  perl(IPC::Run), perl(URI)
+BuildRequires:  perl(IPC::Run), perl(URI), perl(Try::Tiny)
 Requires:       perl(Moose) >= 0.57
 Requires:	perl(File::Copy::Recursive) >= 0.36
 Requires:       cvs, cvs2cl
@@ -63,8 +63,48 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/*
 
 %changelog
-* Sat May 19 2012 SVN: new release
-- Release: 0.1.4
+* Fri Oct 11 2013 SVN: new release
+- Release: 0.2.1
+
+* Fri Oct 11 2013 12:45 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/CVS.pm.in: documented the auto_detect method
+
+* Fri Oct 11 2013 12:40 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.2.0
+
+* Fri Oct 11 2013 12:34 squinney@INF.ED.AC.UK
+- lcfg.yml, lib/LCFG/Build/VCS/CVS.pm.in: Added a rather stupid
+  auto-detection method for CVS which just looks for the presence
+  of a CVS/Root file in the specified directory
+
+* Tue Oct 08 2013 16:17 squinney@INF.ED.AC.UK
+- LCFG-Build-VCS.spec, lib/LCFG/Build/VCS/SVN.pm.in: Added a new
+  auto_detect method which returns a boolean value which indicates
+  whether or not a directory is part of an svn working copy
+
+* Tue Oct 08 2013 15:38 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS.pm.in: Tweaked error message on absolute path
+  type so it is less confusing
+
+* Tue Aug 27 2013 10:48 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.6
+
+* Tue Aug 27 2013 10:46 squinney@INF.ED.AC.UK
+- lcfg.yml, lib/LCFG/Build/VCS.pm.in, lib/LCFG/Build/VCS/SVN.pm.in:
+  need to run 'svn up' before using svn2cl to ensure we get all the
+  log messages
+
+* Fri Aug 23 2013 10:29 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.5
+
+* Fri Aug 23 2013 10:25 squinney@INF.ED.AC.UK
+- lib/LCFG/Build/VCS/SVN.pm.in: Fixed the genchangelog method so
+  that it builds the correct changelog for branches rather than
+  just always using trunk. Fixes
+  https://bugs.lcfg.org/show_bug.cgi?id=669
+
+* Sat May 19 2012 14:52 squinney@INF.ED.AC.UK
+- Changes, lcfg.yml: LCFG-Build-VCS release: 0.1.4
 
 * Sat May 19 2012 14:52 squinney@INF.ED.AC.UK
 - lib/LCFG/Build/VCS/SVN.pm.in: Reworked the way the repository url

@@ -2,19 +2,20 @@ package LCFG::Build::VCS::CVS;  # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: CVS.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Id: CVS.pm.in 23958 2013-10-11 12:45:38Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/CVS.pm.in,v $
-# $Revision: 3582 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_4/lib/LCFG/Build/VCS/CVS.pm.in $
-# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
+# $Revision: 23958 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_2_1/lib/LCFG/Build/VCS/CVS.pm.in $
+# $Date: 2013-10-11 13:45:38 +0100 (Fri, 11 Oct 2013) $
 
-our $VERSION = '0.1.4';
+our $VERSION = '0.2.1';
 
 use Cwd            ();
 use File::Find     ();
 use File::Path     ();
 use File::Spec     ();
 use IO::File qw(O_WRONLY O_CREAT O_NONBLOCK O_NOCTTY);
+use Try::Tiny;
 
 use Moose;
 with 'LCFG::Build::VCS';
@@ -30,6 +31,20 @@ has 'root' => (
 
 has '+id' => ( default => 'CVS' );
 
+# This should give a speed-up in loading
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+
+sub auto_detect {
+    my ( $class, $dir ) = @_;
+
+    my $rootfile = File::Spec->catfile( $dir, 'CVS', 'Root' );
+    my $is_cvs = -f $rootfile ? 1 : 0;
+
+    return $is_cvs;
+}
+
 sub build_cmd {
     my ( $self, @args ) = @_;
 
@@ -41,11 +56,6 @@ sub build_cmd {
 
     return @cmd;
 }
-
-# This should give a speed-up in loading
-
-no Moose;
-__PACKAGE__->meta->make_immutable;
 
 sub _get_root {
     my ($self) = @_;
@@ -367,7 +377,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::CVS version 0.1.4
+    This documentation refers to LCFG::Build::VCS::CVS version 0.2.1
 
 =head1 SYNOPSIS
 
@@ -402,7 +412,7 @@ http://www.lcfg.org/doc/buildtools/
 
 =head1 ATTRIBUTES
 
-=over 4
+=over
 
 =item module
 
@@ -455,7 +465,25 @@ file name is 'ChangeLog'.
 
 =head1 SUBROUTINES/METHODS
 
-=over 4
+The following class methods are available:
+
+=over
+
+=item new
+
+Creates a new instance of the class.
+
+=item auto_detect($dir)
+
+This method returns a boolean value which indicates whether or not the
+specified directory is part of a checked out working copy of a
+CVS repository.
+
+=back
+
+The following instance methods are available:
+
+=over
 
 =item checkcommitted()
 
@@ -546,7 +574,8 @@ anyway useful.
 
 =head1 SEE ALSO
 
-L<LCFG::Build::PkgSpec>, L<LCFG::Build::VCS::None>, L<LCFG::Build::Tools>
+L<LCFG::Build::PkgSpec>, L<LCFG::Build::VCS::None>,
+L<LCFG::Build::VCS::SVN>, L<LCFG::Build::Tools>
 
 =head1 PLATFORMS
 
@@ -568,7 +597,7 @@ welcome.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2008 University of Edinburgh. All rights reserved.
+Copyright (C) 2008-2013 University of Edinburgh. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the terms of the GPL, version 2 or later.

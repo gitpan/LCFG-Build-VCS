@@ -2,13 +2,13 @@ package LCFG::Build::VCS;   # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: VCS.pm.in 3582 2009-03-13 15:11:36Z squinney@INF.ED.AC.UK $
+# $Id: VCS.pm.in 23922 2013-10-08 15:38:53Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS.pm.in,v $
-# $Revision: 3582 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_4/lib/LCFG/Build/VCS.pm.in $
-# $Date: 2009-03-13 15:11:36 +0000 (Fri, 13 Mar 2009) $
+# $Revision: 23922 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_2_1/lib/LCFG/Build/VCS.pm.in $
+# $Date: 2013-10-08 16:38:53 +0100 (Tue, 08 Oct 2013) $
 
-our $VERSION = '0.1.4';
+our $VERSION = '0.2.1';
 
 use DateTime ();
 use File::Copy ();
@@ -24,7 +24,7 @@ use Moose::Util::TypeConstraints;
 subtype 'AbsPath'
     => as 'Str'
     => where { File::Spec->file_name_is_absolute($_) }
-    => message { 'Working Directory must be an absolute path.' };
+    => message { 'Directory must be an absolute path.' };
 
 # coerce the input string (which is possibly a relative path) into an
 # absolute path which does not have a trailing /
@@ -174,7 +174,6 @@ sub update_changelog {
 
     my $tmpname = $tmplog->filename;
 
-    my @now = localtime;
     my $date = DateTime->now->ymd;
 
     my $id = $self->id;
@@ -262,7 +261,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS version 0.1.4
+    This documentation refers to LCFG::Build::VCS version 0.2.1
 
 =head1 SYNOPSIS
 

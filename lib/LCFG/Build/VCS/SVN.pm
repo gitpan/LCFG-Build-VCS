@@ -2,18 +2,19 @@ package LCFG::Build::VCS::SVN; # -*-perl-*-
 use strict;
 use warnings;
 
-# $Id: SVN.pm.in 20985 2012-05-19 14:52:36Z squinney@INF.ED.AC.UK $
+# $Id: SVN.pm.in 23923 2013-10-08 16:17:56Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/SVN.pm.in,v $
-# $Revision: 20985 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_4/lib/LCFG/Build/VCS/SVN.pm.in $
-# $Date: 2012-05-19 15:52:36 +0100 (Sat, 19 May 2012) $
+# $Revision: 23923 $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_2_1/lib/LCFG/Build/VCS/SVN.pm.in $
+# $Date: 2013-10-08 17:17:56 +0100 (Tue, 08 Oct 2013) $
 
-our $VERSION = '0.1.4';
+our $VERSION = '0.2.1';
 
 use File::Path ();
 use File::Spec ();
 use IPC::Run qw(run);
 use IO::File qw(O_WRONLY O_CREAT O_NONBLOCK O_NOCTTY);
+use Try::Tiny;
 use URI ();
 
 use Moose;
@@ -26,6 +27,21 @@ has '+id' => ( default => 'SVN' );
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+sub auto_detect {
+    my ( $class, $dir ) = @_;
+
+    my $is_svn = 0;
+    try {
+	my $vcs = $class->new( module  => 'test',
+			       workdir => $dir );
+
+	$vcs->run_cmd( 'info', $dir );
+	$is_svn = 1;
+    };
+
+    return $is_svn;
+}
 
 sub get_info {
     my ( $self, $infokey, $directory ) = @_;
@@ -241,7 +257,7 @@ sub genchangelog {
 
     warn "Generating Changelog from subversion log\n";
 
-    my $trunk = $self->trunk_url();
+    my $dir     = $self->workdir;
     my $logfile = $self->logfile;
 
     if ( !-e $logfile ) {
@@ -255,7 +271,10 @@ sub genchangelog {
         $self->run_cmd( 'add', $logfile );
     }
 
-    my @cmd = ( '/usr/bin/svn2cl', '--output', $logfile, $trunk );
+    # MUST do an update beforehand otherwise some logs get missed.
+    $self->run_cmd( 'update', $dir );
+
+    my @cmd = ( '/usr/bin/svn2cl', '--output', $logfile, $dir );
     if ( $self->dryrun ) {
         print "Dry-run: @cmd\n";
     }
@@ -356,7 +375,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::SVN version 0.1.4
+    This documentation refers to LCFG::Build::VCS::SVN version 0.2.1
 
 =head1 SYNOPSIS
 
@@ -391,7 +410,7 @@ http://www.lcfg.org/doc/buildtools/
 
 =head1 ATTRIBUTES
 
-=over 4
+=over
 
 =item module
 
@@ -434,7 +453,25 @@ file name is 'ChangeLog'.
 
 =head1 SUBROUTINES/METHODS
 
-=over 4
+The following class methods are available:
+
+=over
+
+=item new
+
+Creates a new instance of the class.
+
+=item auto_detect($dir)
+
+This method returns a boolean value which indicates whether or not the
+specified directory is part of a checked out working copy of a
+subversion repository.
+
+=back
+
+The following instance methods are available:
+
+=over
 
 =item get_info($key)
 
@@ -566,7 +603,7 @@ welcome.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2008-2009 University of Edinburgh. All rights reserved.
+Copyright (C) 2008-2013 University of Edinburgh. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the terms of the GPL, version 2 or later.

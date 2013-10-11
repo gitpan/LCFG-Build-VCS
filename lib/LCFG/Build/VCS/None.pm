@@ -5,10 +5,10 @@ use warnings;
 # $Id: None.pm.in 12860 2010-07-12 10:42:34Z squinney@INF.ED.AC.UK $
 # $Source: /var/cvs/dice/LCFG-Build-VCS/lib/LCFG/Build/VCS/None.pm.in,v $
 # $Revision: 12860 $
-# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_1_4/lib/LCFG/Build/VCS/None.pm.in $
+# $HeadURL: https://svn.lcfg.org/svn/source/tags/LCFG-Build-VCS/LCFG_Build_VCS_0_2_1/lib/LCFG/Build/VCS/None.pm.in $
 # $Date: 2010-07-12 11:42:34 +0100 (Mon, 12 Jul 2010) $
 
-our $VERSION = '0.1.4';
+our $VERSION = '0.2.1';
 
 use File::Copy::Recursive ();
 use File::HomeDir ();
@@ -180,7 +180,7 @@ __END__
 
 =head1 VERSION
 
-    This documentation refers to LCFG::Build::VCS::None version 0.1.4
+    This documentation refers to LCFG::Build::VCS::None version 0.2.1
 
 =head1 SYNOPSIS
 
